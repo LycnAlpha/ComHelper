@@ -17,14 +17,47 @@ class CreditCardDetailsDialog extends StatefulWidget {
 }
 
 class _CreditCardDetailsDialogState extends State<CreditCardDetailsDialog> {
-  String? selectedCard;
+  CreditCard? selectedCard;
   var cards = {'card1', 'card2', 'card3'};
   final TextEditingController _cardNumber = TextEditingController();
   final TextEditingController _expireDate = TextEditingController();
   final TextEditingController _cvcCode = TextEditingController();
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
+  List<CreditCard> savedCards = [];
+
   bool doSave = false;
+  bool isSavedCard = false;
+
+  @override
+  void initState() {
+    getSavedCards();
+    super.initState();
+  }
+
+  Future<List<CreditCard>> fetchCreditCards() async {
+    List<CreditCard> creditCards = [];
+
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance.collection('card').get();
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> doc
+          in querySnapshot.docs) {
+        CreditCard card = CreditCard.fromFirestore(doc, null);
+        creditCards.add(card);
+      }
+    } catch (e) {
+      print('Error fetching credit cards: $e');
+    }
+
+    return creditCards;
+  }
+
+  void getSavedCards() async {
+    savedCards = await fetchCreditCards();
+    setState(() {});
+  }
 
   void saveReloadDetails() async {
     showDialog(
@@ -93,6 +126,8 @@ class _CreditCardDetailsDialogState extends State<CreditCardDetailsDialog> {
     } else if (_cardNumber.text.length != 16 ||
         !RegExp(r'^[0-9]+$').hasMatch(_cardNumber.text)) {
       showErrorSnackBar('Please enter valid card number');
+    } else if (!RegExp(r'^[0-9]+/[0-9]+$').hasMatch(_expireDate.text)) {
+      showErrorSnackBar('Please enter valid expire date');
     } else if (_cvcCode.text.length != 3 ||
         !RegExp(r'^[0-9]+$').hasMatch(_cvcCode.text)) {
       showErrorSnackBar('Please enter valid cvc code');
@@ -135,16 +170,16 @@ class _CreditCardDetailsDialogState extends State<CreditCardDetailsDialog> {
             children: [
               savedCardsDropdown(),
               divider(),
-              inputField('Card Number', _cardNumber),
+              cardNumberInputField(_cardNumber),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(child: inputField('Expire Date', _expireDate)),
+                  Expanded(child: expireDateInputField(_expireDate)),
                   const SizedBox(
                     width: 10.0,
                   ),
-                  Expanded(child: inputField('CVC', _cvcCode))
+                  Expanded(child: cvcInputField(_cvcCode))
                 ],
               ),
               saveCardcheckBox(),
@@ -159,7 +194,6 @@ class _CreditCardDetailsDialogState extends State<CreditCardDetailsDialog> {
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Container(
         alignment: Alignment.center,
-        width: MediaQuery.of(context).size.width * 0.95,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: Colors.transparent),
@@ -182,12 +216,19 @@ class _CreditCardDetailsDialogState extends State<CreditCardDetailsDialog> {
             onChanged: (newValue) {
               setState(() {
                 selectedCard = newValue!;
+                if (selectedCard != null) {
+                  _cardNumber.text = selectedCard!.cardNumber.toString();
+                  _expireDate.text = selectedCard!.expireDate.toString();
+                  _cvcCode.text = selectedCard!.cvc.toString();
+                  isSavedCard = true;
+                }
               });
             },
-            items: cards.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
+            items: savedCards
+                .map<DropdownMenuItem<CreditCard>>((CreditCard value) {
+              return DropdownMenuItem<CreditCard>(
                 value: value,
-                child: Text(value),
+                child: Text(value.cardNumber.toString()),
               );
             }).toList(),
           ),
@@ -225,7 +266,7 @@ class _CreditCardDetailsDialogState extends State<CreditCardDetailsDialog> {
     );
   }
 
-  Widget inputField(label, controller) {
+  Widget cardNumberInputField(controller) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Container(
@@ -251,7 +292,75 @@ class _CreditCardDetailsDialogState extends State<CreditCardDetailsDialog> {
                 isCollapsed: true,
                 counterText: '',
                 border: InputBorder.none,
-                hintText: label,
+                hintText: 'Card Number',
+                hintStyle: TextStyle(color: Colors.grey.shade500)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget expireDateInputField(controller) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.transparent),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 3,
+                blurRadius: 10,
+                offset: Offset(0, 5),
+              )
+            ],
+            color: Colors.white),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: TextField(
+            controller: controller,
+            maxLength: 5,
+            decoration: InputDecoration(
+                isCollapsed: true,
+                counterText: '',
+                border: InputBorder.none,
+                hintText: 'Expire (MM/YY)',
+                hintStyle: TextStyle(color: Colors.grey.shade500)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget cvcInputField(controller) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.transparent),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 3,
+                blurRadius: 10,
+                offset: Offset(0, 5),
+              )
+            ],
+            color: Colors.white),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: TextField(
+            controller: controller,
+            maxLength: 3,
+            decoration: InputDecoration(
+                isCollapsed: true,
+                counterText: '',
+                border: InputBorder.none,
+                hintText: 'CVC',
                 hintStyle: TextStyle(color: Colors.grey.shade500)),
           ),
         ),
@@ -296,22 +405,25 @@ class _CreditCardDetailsDialogState extends State<CreditCardDetailsDialog> {
   Widget saveCardcheckBox() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Checkbox(
-              value: doSave,
-              onChanged: (newValue) {
-                setState(() {
-                  doSave = newValue!;
-                });
-              }),
-          Text(
-            'Save card details for future payments',
-            style: TextStyle(color: Colors.grey.shade500),
-          )
-        ],
+      child: Visibility(
+        visible: !isSavedCard,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Checkbox(
+                value: doSave,
+                onChanged: (newValue) {
+                  setState(() {
+                    doSave = newValue!;
+                  });
+                }),
+            Text(
+              'Save card details for future payments',
+              style: TextStyle(color: Colors.grey.shade500),
+            )
+          ],
+        ),
       ),
     );
   }
