@@ -20,45 +20,191 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.max,
               children: [
-                const Text(
-                  "Com Helper",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 35,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700),
-                ),
-                const Text(
-                  "Your TeleCommunication Partner",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white54,
-                      fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(
-                  height: 50.0,
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ReloadScreen()));
-                    },
-                    child: const Text(
-                      "Let's Get Started",
-                      style:
-                          TextStyle(fontSize: 20.0, color: Color(0xff329BFC)),
-                    ))
+                homePageHeader(),
+                providerButtons(context),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget homePageHeader() {
+    return const Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          "Com Helper",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 35, color: Colors.white, fontWeight: FontWeight.w700),
+        ),
+        Text(
+          "Your TeleCommunication Partner",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 20, color: Colors.white54, fontWeight: FontWeight.w700),
+        ),
+        SizedBox(
+          height: 50.0,
+        ),
+        Text(
+          "Let's Get Started",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.w600),
+        ),
+        Text(
+          "Please select your corresponding service provider",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 18.0,
+              color: Colors.white54,
+              fontWeight: FontWeight.w700),
+        ),
+      ],
+    );
+  }
+
+  Widget providerButtons(BuildContext context) {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReloadScreen()));
+                },
+                child: Container(
+                  height: 100.0,
+                  width: 150.0,
+                  padding: const EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      )
+                    ],
+                  ),
+                  child: Image.asset('assets/icons/icon_dialog.png'),
+                ),
+              ),
+              const SizedBox(
+                width: 30.0,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReloadScreen()));
+                },
+                child: Container(
+                  height: 100.0,
+                  width: 150.0,
+                  padding: const EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      )
+                    ],
+                  ),
+                  child: Image.asset('assets/icons/icon_mobitel.png'),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 50.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReloadScreen()));
+                },
+                child: Container(
+                  height: 100.0,
+                  width: 150.0,
+                  padding: const EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      )
+                    ],
+                  ),
+                  child: Image.asset('assets/icons/icon_hutch.png'),
+                ),
+              ),
+              const SizedBox(
+                width: 30.0,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReloadScreen()));
+                },
+                child: Container(
+                  height: 100.0,
+                  width: 150.0,
+                  padding: const EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      )
+                    ],
+                  ),
+                  child: Image.asset('assets/icons/icon_airtel.png'),
+                ),
+              )
+            ],
+          )
+        ],
       ),
     );
   }

@@ -1,5 +1,6 @@
 //import 'package:credit_card_scanner/credit_card_scanner.dart';
 import 'package:flutter/material.dart';
+import 'package:tele_communication_helper/dialogs/credit_card_details_dialog.dart';
 import 'package:tele_communication_helper/screens/home_screen.dart';
 
 class ReloadScreen extends StatefulWidget {
@@ -167,7 +168,14 @@ class _ReloadScreenState extends State<ReloadScreen> {
     ));
   }
 
-  void scanCard() async {
+  void scanCard() {
+    showDialog(
+        context: context,
+        builder: ((context) => CreditCardDetailsDialog(
+              phoneNumer: _number.text,
+              amount: double.tryParse(_amount.text) ?? 00.00,
+            )));
+
     // var cardDetails = await CardScanner.scanCard();
 
     // print(cardDetails);
