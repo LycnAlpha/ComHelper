@@ -6,6 +6,7 @@ class Reload {
   final String? cvc;
   final String? phoneNumber;
   final double? amount;
+  final String? date;
 
   Reload({
     this.cardNumber,
@@ -13,6 +14,7 @@ class Reload {
     this.cvc,
     this.phoneNumber,
     this.amount,
+    this.date,
   });
 
   factory Reload.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -23,7 +25,8 @@ class Reload {
         expireDate: data?['expireDate'],
         cvc: data?['cvc'],
         phoneNumber: data?['phoneNumber'],
-        amount: data?['amount']);
+        amount: data?['amount'],
+        date: data?['date']);
   }
 
   Map<String, dynamic> toFirestore() {
@@ -33,6 +36,7 @@ class Reload {
       if (cvc != null) "cvc": cvc,
       if (phoneNumber != null) "phoneNumber": phoneNumber,
       if (amount != null) "amount": amount,
+      if (date != null) "date": date,
     };
   }
 }

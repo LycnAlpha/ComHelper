@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tele_communication_helper/dialogs/disable_user_interaction_dialog.dart';
 import 'package:tele_communication_helper/models/credit_card.dart';
 import 'package:tele_communication_helper/models/reload.dart';
@@ -74,7 +75,8 @@ class _CreditCardDetailsDialogState extends State<CreditCardDetailsDialog> {
           expireDate: _expireDate.text,
           cvc: _cvcCode.text,
           phoneNumber: widget.phoneNumer,
-          amount: widget.amount);
+          amount: widget.amount,
+          date: DateFormat('yyyy-MM-dd hh-mm a').format(DateTime.now()));
 
       final docRef = db
           .collection('reload')

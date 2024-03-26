@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:tele_communication_helper/screens/reload_history_screen.dart';
 import 'package:tele_communication_helper/screens/reload_screen.dart';
 
 class HomePage extends StatelessWidget {
@@ -26,6 +29,7 @@ class HomePage extends StatelessWidget {
               children: [
                 homePageHeader(),
                 providerButtons(context),
+                reloadHistoryButton(context),
               ],
             ),
           ),
@@ -77,7 +81,6 @@ class HomePage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.max,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -205,6 +208,43 @@ class HomePage extends StatelessWidget {
             ],
           )
         ],
+      ),
+    );
+  }
+
+  Widget reloadHistoryButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ReloadHistoryScreen()));
+        },
+        child: Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(vertical: 5.0),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.transparent),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 3,
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                )
+              ],
+              color: Colors.white),
+          child: const Text(
+            'Reload History',
+            style: TextStyle(
+                color: Color(0xff329BFC),
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500),
+          ),
+        ),
       ),
     );
   }
