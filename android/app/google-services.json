@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "865059299938",
-    "project_id": "comhelper-3fb36",
-    "storage_bucket": "comhelper-3fb36.appspot.com"
+    "project_number": "337636219155",
+    "project_id": "com-helper-1bfeb",
+    "storage_bucket": "com-helper-1bfeb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:865059299938:android:6fa771e4012bfca572a73b",
+        "mobilesdk_app_id": "1:337636219155:android:f03ffc559f969e631ea2e6",
         "android_client_info": {
           "package_name": "com.example.tele_communication_helper"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAh1teWB0Emcjb45JktFJkWdFJKJknng3Q"
+          "current_key": "AIzaSyBUclrUZTF1oNP6ZJBp49e2qMoV_mIAydo"
         }
       ],
       "services": {
